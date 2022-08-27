@@ -1,15 +1,16 @@
 from turtle import *
 import turtle
 import time
-
+import random
 class Main_Snake:
 
     def __init__(self):
+        self.state_game = True
         self.main_ventana()
         self.snake()
         self.move_snake()
-        self.update_main_ventana(True)
-
+        self.food()
+        self.update_main_ventana(self.state_game)
 
     
     def main_ventana(self):
@@ -36,14 +37,21 @@ class Main_Snake:
         # cambia el color del puntero
         self.head_snake.color("white")
         # direccion por defecto stop
-        self.head_snake.direction = "stop"
 
     def update_main_ventana(self, start):
         while start:
             self.ventana.update()
-            #self.direction_snake("right")
+
             self.move_snake()
-            time.sleep(0.1)
+
+    def colision_snake_food(self):
+        if self.head_snake.distance(self.foods) < 20:
+            self.position_food()
+
+    def position_food(self):
+        x = random.randint(-280, 280)
+        y = random.randint(-280, 280)
+        self.foods.goto(x,y)
 
     def move_snake(self):
         wn = self.ventana
@@ -69,17 +77,26 @@ class Main_Snake:
 
     def direction_snake(self, direcction):
         snake = self.head_snake
-        y = snake.ycor()
-        x = snake.xcor()
-        if direcction == "up":
-            snake.sety(y + 20)
-        if direcction == "down":
-            snake.sety(y - 20)
-        if direcction == "right":
-            snake.setx(x + 20)
-        if direcction == "left":
-            snake.setx(x - 20)
+        while self.state_game:
+            self.colision_snake_food()
 
-            
+            y = snake.ycor()
+            x = snake.xcor()
+            if direcction == "up":
+                snake.sety(y + 20)
+            if direcction == "down":
+                snake.sety(y - 20)
+            if direcction == "right":
+                snake.setx(x + 20)
+            if direcction == "left":
+                snake.setx(x - 20)
+            time.sleep(0.1)
 
 
+    def food(self):
+        self.foods = turtle.Turtle()
+        self.foods.speed(0)
+        self.foods.shape("circle")
+        self.foods.penup()
+        self.foods.color("red")
+        self.position_food()
