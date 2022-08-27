@@ -1,0 +1,37 @@
+from turtle import *
+import turtle
+
+def create_sun():
+    color('red', 'yellow')
+    begin_fill()
+    while True:
+        forward(200)
+        left(170)
+        if abs(pos()) < 1:
+            break
+    end_fill()
+
+def create_square():
+    pluma= turtle.Turtle()
+    for i in range(0, 4):
+        pluma.forward(100)
+        pluma.left(90)
+
+def draw_square():
+    fred = turtle.Turtle()
+    for _ in range(4):
+        fred.forward(100)
+        fred.left(90)
+
+def move():
+    window = turtle.Screen()
+    window.onkeypress(draw_square, 'space')
+    window.listen()
+
+
+if __name__=="__main__":
+    #create_square()
+    #create_sun()
+    move()
+    done()
+
