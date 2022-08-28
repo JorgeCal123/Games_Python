@@ -2,26 +2,12 @@ from turtle import *
 import turtle
 import time
 import random
-class Main_Snake:
+
+class Snake:
 
     def __init__(self):
-        self.state_game = True
-        self.main_ventana()
         self.snake()
-        self.move_snake()
-        self.food()
-        self.update_main_ventana(self.state_game)
 
-    
-    def main_ventana(self):
-        # Creamos una ventana
-        self.ventana = turtle.Screen()
-        # titulo de la ventaana
-        self.ventana.title("Snake JC")
-        # color del fondo de la ventana
-        self.ventana.bgcolor("black")
-        # tamaño de la ventana
-        self.ventana.setup(width=600, height=600)
 
     def snake(self):
         # creamos el puntero
@@ -38,65 +24,24 @@ class Main_Snake:
         self.head_snake.color("white")
         # direccion por defecto stop
 
-    def update_main_ventana(self, start):
-        while start:
-            self.ventana.update()
+    def body_snake(self):
+        new_body = turtle.Turtle()
+        new_body.speed(0)
+        new_body.shape("square")
+        new_body.penup()
+        new_body.color("black")
+        self.body.append(new_body)
 
-            self.move_snake()
+    def show_body(self):
+        size = len(self.body)
+        for i in range(size - 1, 0, -1):
+            x = self.body[i - 1].xcor()
+            y = self.body[i - 1].ycor()
+            self.body[i].goto(x,y)
+            self.body[i].color("gray")
 
-    def colision_snake_food(self):
-        if self.head_snake.distance(self.foods) < 20:
-            self.position_food()
-
-    def position_food(self):
-        x = random.randint(-280, 280)
-        y = random.randint(-280, 280)
-        self.foods.goto(x,y)
-
-    def move_snake(self):
-        wn = self.ventana
-        wn.onkeypress(self.up, "Up")
-        wn.onkeypress(self.down, "Down")
-        wn.onkeypress(self.right, "Right")
-        wn.onkeypress(self.left, "Left")
-        wn.listen()
-
-
-    def up(self):
-        self.direction_snake("up")
-
-    def down(self):
-        self.direction_snake("down")
-
-    def right(self):
-        self.direction_snake("right")
-
-    def left(self):
-        self.direction_snake("left")
-
-
-    def direction_snake(self, direcction):
-        snake = self.head_snake
-        while self.state_game:
-            self.colision_snake_food()
-
-            y = snake.ycor()
-            x = snake.xcor()
-            if direcction == "up":
-                snake.sety(y + 20)
-            if direcction == "down":
-                snake.sety(y - 20)
-            if direcction == "right":
-                snake.setx(x + 20)
-            if direcction == "left":
-                snake.setx(x - 20)
-            time.sleep(0.1)
-
-
-    def food(self):
-        self.foods = turtle.Turtle()
-        self.foods.speed(0)
-        self.foods.shape("circle")
-        self.foods.penup()
-        self.foods.color("red")
-        self.position_food()
+        if size > 0:
+            x = self.head_snake.xcor()
+            y = self.head_snake.ycor()
+            self.body[0].goto(x,y)
+            self.body[0].color("gray")
