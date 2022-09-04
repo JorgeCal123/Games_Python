@@ -1,0 +1,51 @@
+import pygame, sys
+from pygame.locals import *
+
+pygame.init()
+
+fpsClock = pygame.time.Clock()
+ventana = pygame.display.set_mode((400, 300), 0, 32)
+
+
+# titulo de la ventana
+pygame.display.set_caption('cat in circle')
+
+WHITE = (255, 255, 255)
+catImg = pygame.image.load('prueba_pygame/cat.png')
+ancho_deseado = 40
+alto_deseado = 60
+catImg = pygame.transform.scale(catImg, (ancho_deseado, alto_deseado))
+
+catx = 10
+caty = 10
+direction = 'right'
+
+while True: # the main game loop
+    ventana.fill(WHITE)
+
+    if direction == 'right':
+        catx += 5
+        if catx == 280:
+            direction = 'down'
+    elif direction == 'down':
+        caty += 5
+        if caty == 220:
+            direction = 'left'
+    elif direction == 'left':
+        catx -= 5
+        if catx == 10:
+            direction = 'up'
+    elif direction == 'up':
+        caty -= 5
+        if caty == 10:
+            direction = 'right'
+
+    ventana.blit(catImg, (catx, caty))
+
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            pygame.quit()
+            sys.exit()
+
+    pygame.display.update()
+    fpsClock.tick(30)
